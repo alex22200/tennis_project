@@ -19,7 +19,9 @@ class Tennis_Downloads:
         self.cur.execute("CREATE TABLE IF NOT EXISTS reg_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Round TEXT, Score TEXT, Location TEXT, Surface TEXT, First_Serve_P1 TEXT, First_Serve_Points_Won_P1 TEXT, Second_Serve_Points_Won_P1 TEXT, Break_Points_Won_P1 TEXT, Total_Return_Points_Won_P1 TEXT, Total_Points_Won_P1 TEXT, Double_Faults_P1 INTEGER, Aces_P1 INTEGER, First_Serve_P2 TEXT, First_Serve_Points_Won_P2 TEXT, Second_Serve_Points_Won_P2 TEXT, Break_Points_Won_P2 TEXT, Total_Return_Points_Won_P2 TEXT, Total_Points_Won_P2 TEXT, Double_Faults_P2 INTEGER, Aces_P2 INTEGER)")
         #self.cur.execute("CREATE TABLE IF NOT EXISTS matched_master (MatchID INTEGER PRIMARY KEY, Dates date)")
         #self.cur.execute("CREATE TABLE IF NOT EXISTS players_list (PlayerID INTEGER PRIMARY KEY, Dates date)")
-
+        #This is filled with user input, need initialize with values from the most comprehensive download, then update function to get newest players in
+        self.cur.execute("CREATE TABLE IF NOT EXISTS players_master (PlayerID INTEGER PRIMARY KEY, Name TEXT, Hand TEXT, Birthdate DATE, Country TEXT)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS ranking_master (Ident INTEGER PRIMARY KEY, PlayerID INTEGER, link TEXT, rank INTEGER, Dates DATE, Name TEXT, Age INTEGER, Points INTEGER, Tourn_Played INTEGER)")
         self.conn.commit()
 
     def Download_Links_Odds(self, StDt, EndDt, Days, db):
@@ -280,8 +282,8 @@ class Tennis_Downloads:
                     df.at[i, 'Pro'] = TblTr[5].find_all('td')[1].text  
                     #Home/Away
                 if not '(0)' in html_soup.find('li',id='oddsMenu-1').a.text:
-                    df.at[i, 'Home'] = html_soup.find('tr',class_='average').find('td',class_='k1').text
-                    df.at[i, 'Away'] = html_soup.find('tr',class_='average').find('td',class_='k2').text
+                    df.at[i, 'Home'] = html_soup.find('tr', class_='average').find('td', class_='k1').text
+                    df.at[i, 'Away'] = html_soup.find('tr', class_='average').find('td', class_='k2').text
                     #Over/Under
                 if not '(0)' in html_soup.find('li',id='oddsMenu-2').a.text:
                     for s in range(0,len(html_soup.find('div', id='oddsMenu-2-data').find('table',class_='result').tbody.find_all('tr',class_='odds-type'))):
@@ -584,14 +586,71 @@ class Tennis_Downloads:
         print(t1)
         print("It actually took ",(t1-t0)," seconds.")
 
-
-
-
-
     def view(self):
         self.cur.execute("SELECT * FROM links_reg")
         rows=self.cur.fetchall()
         return rows
+
+    def Ranking_Down(self, StDt, EndDt, Days, db):
+        t0 = datetime.now()
+        print('Start time: ', t0)
+
+        self.StDt = datetime.strptime(str(StDt), '%d.%m.%Y').date()
+        if EndDt != 0:
+            self.EndDt = datetime.strptime(str(EndDt), '%d.%m.%Y').date()
+            self.Days_between = self.StDt - self.EndDt
+            self.Days_to_Down = abs(self.Days_between.days)
+        if Days != 0:
+            self.Days_to_Down = int(Days)
+            
+        URL_list = []
+        for i in range(0, self.Days_to_Down):
+            if datetime.weekday(self.StDt) == 0:
+                URL_list.append("https://www.atptour.com/en/rankings/singles?rankDate=" + str(self.StDt.year) + "-" + str(self.StDt.month) + "-" + str(self.StDt.day) + "&rankRange=1-5000")
+            self.StDt = self.StDt - timedelta(days=1)
+
+        #test, which dates already in database
+        conn = sqlite3.connect(db)
+        cur = conn.cursor()
+        cur.execute("SELECT * from ranking_master")
+        Links = [tup[2] for tup in cur.fetchall()]  
+        for i in range(0, len(URL_list)):
+            if URL_list[i] in Links:
+                URL_list.pop[i]
+
+        Rank = []
+        Name = []
+        Link = []
+        Points = []
+        Tourn = []
+        Age = []
+        Ident = []
+        Dates = []
+
+        for i in range(0, len(URL_list)):
+            page=requests.get(URL_list[i])
+            html_soup = soup(page.text,'html.parser')
+            cont = html_soup.find('table', class_='mega-table')
+            for s in range(0, len(cont.tbody.find_all('tr'))):
+                Rank.append(s+1)
+                Name.append(cont.tbody.find_all('tr')[s].find_all('td')[3].find('a').get_text().encode('utf-8').strip())
+                Points.append(str(cont.tbody.find_all('tr')[s].find_all('td')[5].get_text()[1:]))
+                Tourn.append(str(cont.tbody.find_all('tr')[s].find_all('td')[6].get_text())[1:-1])
+                Link.append(URL_list[i])
+                Age.append(str(cont.tbody.find_all('tr')[s].find_all('td')[4].get_text()[2:-4]))
+                Ident.append(str(self.StDt) + cont.tbody.find_all('tr')[s].find_all('td')[3].find('a').get_text().encode('utf-8').strip())
+                Dates.append(self.StDt)
+                        
+        for i in range(0, len(Age)):
+            try:
+                cur.execute("INSERT INTO ranking_master VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (Ident[i], 0, Link[i], Rank[i], Dates[i], Name[i], Age[i], Points[i], Tourn[i]))
+                conn.commit()
+            except:
+                pass
+           
+        t1 = datetime.now()
+        print(t1)
+        print("It actually took ",(t1-t0)," seconds.")        
 
     def Update_Players(self):
         self.conn = sqlite3.connect(db)
@@ -608,6 +667,7 @@ class Tennis_Downloads:
         for element in P2[5:15]:
             closest.append(process.extractOne(str(element), P1))
         print(datetime.now() - t0)
+
     def __del__(self):
         
         self.conn.close()

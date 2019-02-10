@@ -52,6 +52,9 @@ class Window(object):
 		b5=Button(window,text="Download Reg", width=18, command=self.Run_Download_Reg)
 		b5.grid(row=1,column=5)		
 
+		b8=Button(window,text="Download Rank", width=18, command=self.Run_Download_Rank)
+		b8.grid(row=2,column=3)		
+
 		b7=Button(window,text="Update IDs", width=18)
 		b7.grid(row=3,column=5)	
 
@@ -61,8 +64,8 @@ class Window(object):
 		b6=Button(window,text="Close", width=18,command=window.destroy)
 		b6.grid(row=4,column=3)
 
-		b8=Button(window,text="Update Players", width=18, command=Run_Update_Players)
-		b8.grid(row=3,column=5)	
+		#b8=Button(window,text="Update Players", width=18, command=Run_Update_Players)
+		#b8.grid(row=3,column=5)	
 
 	def Run_Download_Links_Odds(self):
 		if self.end_date.get() == '':
@@ -108,9 +111,20 @@ class Window(object):
 			NumDs = self.num_days.get()
 		Tennis_Downloads.Download_Odds(self, self.start_date.get(), EndDt, float(NumDs), "tennis.db")	
 
+	def Run_Download_Rank(self):
+		if self.end_date.get() == '':
+			EndDt = 0
+		else:
+			EndDt = self.end_date.get()
+		if self.num_days.get() == '':
+			NumDs = 0
+		else:
+			NumDs = self.num_days.get()
+			Tennis_Downloads.Ranking_Down(self, self.start_date.get(), EndDt, float(NumDs), "tennis.db")
 
-	def Run_Update_Players(self):
-		Tennis_Downloads.Update_Players(self)
+
+	#def Run_Update_Players(self):
+	#	Tennis_Downloads.Update_Players(self)
 
 
 window = Tk()
