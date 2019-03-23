@@ -758,20 +758,21 @@ class Tennis_Downloads:
         df_reg_alt.drop_duplicates('Player', inplace = True)
         df_reg_alt.reset_index(inplace = True)
         df_reg_alt.drop('index', axis=1, inplace = True)
+        df_reg_alt['PID'] = 0
         
         
         #check if name is already in DB
+        
         for i in range(0, len(df_reg_alt['Player'])):
             try:
                 df_reg_alt.at[i, 'PID'] = int(df_play[df_reg_alt.at[i, 'Player'] == df_play['Name_Reg']]['ID'])
             except:
                 pass   
-        for i in range(0, len(df_reg_alt['Player'])):
             if i == 0:
                 print('Initiating the word comparison...')
             if i%100 == 0:
                 print('Progress: ', i/len(df_reg_alt['Player']) *100, '%')
-            if math.isnan(df_reg_alt.at[i, 'PID']) == True:
+            if df_reg_alt.at[i, 'PID'] == 0:
                 try:
                     Player = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[0]
                     df_reg_alt.at[i, 'Score'] = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[1]

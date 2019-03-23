@@ -90,12 +90,32 @@ for i in range(0, len(df_reg_alt['Player'])):
     if i%100 == 0:
         print('Progress: ', i/len(df_reg_alt['Player']))
     try:
+        df_reg_alt.at[i, 'PID'] = int(df_play[df_reg_alt.at[i, 'Player'] == df_play['Name_Reg']]['ID'])
+    except:
+        pass
+    try:
         Player = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[0]
         df_reg_alt.at[i, 'Score'] = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[1]
         df_reg_alt.at[i, 'Player_DB'] = Player
         df_reg_alt.at[i, 'PID'] = int(df_play[df_play['Name'] == Player]['ID'].iloc[0])
     except:
         pass
+    
+for i in range(0, len(df_reg_alt['Player'])):
+    df_reg_alt.at[i, 'PID'] = int(df_play[df_reg_alt.at[i, 'Player'] == df_play['Name_Reg']]['ID'])
+    if i == 0:
+        print('Initiating the word comparison...')
+    if i%100 == 0:
+        print('Progress: ', i/len(df_reg_alt['Player']) *100, '%')
+    if math.isnan(df_reg_alt.at[i, 'PID']) == True:
+        try:
+            Player = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[0]
+            df_reg_alt.at[i, 'Score'] = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[1]
+            df_reg_alt.at[i, 'Player_DB'] = Player
+            df_reg_alt.at[i, 'PID'] = int(df_play[df_play['Name'] == Player]['ID'].iloc[0])
+        except:
+            pass
+    
     
 #only keep if match is close enough
 df_reg_alt = df_reg_alt[df_reg_alt['Score']>86]
