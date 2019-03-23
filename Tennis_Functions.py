@@ -5,6 +5,10 @@ from datetime import datetime, timedelta
 import os
 import sqlite3
 from fuzzywuzzy import fuzz, process
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+import time
+import math
 
 class Tennis_Downloads:
     def __init__(self, db):
@@ -19,7 +23,7 @@ class Tennis_Downloads:
         self.cur.execute("CREATE TABLE IF NOT EXISTS odds_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Info TEXT, Location TEXT, Score TEXT, Ranking1 INTEGER, Ranking2 INTEGER, Birthday1 Date, Birthday2 DATE, Height1 REAL, Height2 REAL, Weight1 REAL, Weight2 REAL, Hand1 TEXT, Hand2 TEXT, Pro1 INTEGER, Pro2 INTEGER, Home INTEGER, Away INTEGER)")
         self.cur.execute("CREATE TABLE IF NOT EXISTS reg_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Round TEXT, Score TEXT, Location TEXT, Surface TEXT, First_Serve_P1 TEXT, First_Serve_Points_Won_P1 TEXT, Second_Serve_Points_Won_P1 TEXT, Break_Points_Won_P1 TEXT, Total_Return_Points_Won_P1 TEXT, Total_Points_Won_P1 TEXT, Double_Faults_P1 INTEGER, Aces_P1 INTEGER, First_Serve_P2 TEXT, First_Serve_Points_Won_P2 TEXT, Second_Serve_Points_Won_P2 TEXT, Break_Points_Won_P2 TEXT, Total_Return_Points_Won_P2 TEXT, Total_Points_Won_P2 TEXT, Double_Faults_P2 INTEGER, Aces_P2 INTEGER)")
         #This is filled with user input, need initialize with values from the most comprehensive download, then update function to get newest players in
-        self.cur.execute("CREATE TABLE IF NOT EXISTS players_master (PlayerID INTEGER PRIMARY KEY, Name TEXT, Hand TEXT, Birthdate DATE, Country TEXT)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS players_master (PlayerID INTEGER PRIMARY KEY, Name TEXT, Hand TEXT, Birthdate DATE)")
         self.cur.execute("CREATE TABLE IF NOT EXISTS ranking_master (Ident TEXT PRIMARY KEY, PlayerID INTEGER, link TEXT, rank INTEGER, Dates DATE, Name TEXT, Age INTEGER, Points INTEGER, Tourn_Played INTEGER)")
         self.conn.commit()
 
@@ -93,13 +97,15 @@ class Tennis_Downloads:
         for day in range(0,self.Days_to_Down):
             self.StDt = self.StDt - timedelta(days=1)
             datesXL.append(str(self.StDt.day) + "." + str(self.StDt.month) + "." + str(self.StDt.year))
-            if self.StDt.month in range(1,9):
+            if self.StDt.month in range(1,10):
                 months = str("0"+str(self.StDt.month))
+            else:
+                months = str(self.StDt.month)
             URL.append("http://www.tennisergebnisse.net/herren/" + str(self.StDt.year) + "-" + str(months) + "-" + str(self.StDt.day) + "/")
         self.df = pd.DataFrame({'Link':URL,'Dates':datesXL})
         self.conn = sqlite3.connect(db)
         self.cur = self.conn.cursor()
-        #write to database links_odds
+        #write to database links_reg
         for i in range(len(self.df['Dates'])):
             try:
                 self.cur.execute("INSERT INTO links_reg VALUES (?, ?)", (self.df.at[i, 'Dates'], self.df.at[i, 'Link']))
@@ -134,6 +140,7 @@ class Tennis_Downloads:
         t0 = datetime.now()
         print('Start time: ', t0)
         self.StDt = datetime.strptime(str(StDt), '%d.%m.%Y').date()
+
         if EndDt != 0:
             self.EndDt = datetime.strptime(str(EndDt), '%d.%m.%Y').date()
             self.Days_between = self.StDt - self.EndDt
@@ -157,14 +164,19 @@ class Tennis_Downloads:
         df.set_index('Dates', inplace = True)
         df = df.loc[self.EndDt:self.StDt]
         df.reset_index(inplace = True)
-        time_to_download = 0.3528
+        time_to_download = 0.30
+        print('Downloading from ',self.EndDt,' to ',self.StDt)
         print('Matches to download: ',len(df['Link']))
         print('Estimated finish time: ',(t0 + timedelta(seconds=(time_to_download*len(df['Link'])))))
         for f in range(0,len(df['Link'])):  
+            #Progress
+            if f%1000 == 0:
+                print('Progress: ', round(f/len(df['Link']),2))
             page = requests.get(df.at[f, 'Link'])
             html_soup = soup(page.text,'html.parser')
             if html_soup.find('tr', class_='tour_head unpair') is not None:
                 df.at[f, 'Date'] = html_soup.find('tr', class_='tour_head unpair').find_all('td')[0].text
+                df.at[f, 'Date'] = df.at[i, 'Date'][:5] + '.20' + df.at[i, 'Date'][6:8]
                 df.at[f, 'Round'] = html_soup.find('tr', class_='tour_head unpair').find_all('td')[1].text
                 df.at[f, 'Player1'] = html_soup.find('tr', class_='tour_head unpair').find_all('td')[2].a.get('title')
                 df.at[f, 'Player2'] = html_soup.find('tr', class_='tour_head unpair').find_all('td')[3].a.get('title')
@@ -197,6 +209,10 @@ class Tennis_Downloads:
                         elif html_soup.find('table', class_='table_stats_match').find_all('tr')[r].find_all('td')[0].text == 'ACES':
                             df.at[f, 'ACES P1'] = html_soup.find('table', class_='table_stats_match').find_all('tr')[r].find_all('td')[1].text
                             df.at[f, 'ACES P2'] = html_soup.find('table', class_='table_stats_match').find_all('tr')[r].find_all('td')[2].text
+         
+        #exclude doubles           
+        df = df[~df["Player1"].str.contains("/")]
+                            
         for i in range(0,len(df['Link'])):
             try:
                 self.cur.execute("INSERT INTO reg_master VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (df.at[i, 'Link'], df.at[i, 'Date'], df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Round'], df.at[i, 'Score'], df.at[i, 'Location'], df.at[i, 'Surface'], df.at[i, '1st Serve % P1'], df.at[i, '1st Serve Points Won P1'], df.at[i, '2nd Serve Points Won P1'], df.at[i, 'BREAK POINTS WON P1'], df.at[i, 'TOTAL RETURN POINTS WON P1'], df.at[i, 'TOTAL POINTS WON P1'], df.at[i, 'DOUBLE FAULTS P1'], df.at[i, 'ACES P1'], df.at[i, '1st Serve % P2'], df.at[i, '1st Serve Points Won P2'], df.at[i, '2nd Serve Points Won P2'], df.at[i, 'BREAK POINTS WON P2'], df.at[i, 'TOTAL RETURN POINTS WON P2'], df.at[i, 'TOTAL POINTS WON P2'], df.at[i, 'DOUBLE FAULTS P2'], df.at[i, 'ACES P2']))
@@ -239,13 +255,25 @@ class Tennis_Downloads:
         df.set_index('Dates', inplace = True)
         df = df.loc[self.EndDt:self.StDt]
         df.reset_index(inplace = True)
-        time_to_download = 0.75
+        time_to_download = 0.434
         print('Downloading from ',self.EndDt,' to ',self.StDt)
         print('Matches to download: ',len(df['Link']))
         print('Estimated finish time: ',(t0 + timedelta(seconds=(time_to_download*len(df['Link'])))))      
 
+
         for i in range(0,len(df['Link'])): 
-            page = requests.get(df.at[i, 'Link'])
+            #Progress
+            if i%1000 == 0:
+                print('Progress: ', round(i/len(df['Link']),2))
+            #added this part to solve the connection issue
+            session = requests.Session()
+            retry = Retry(connect = 3, backoff_factor = 0.5)
+            adapter = HTTPAdapter(max_retries = retry)
+            session.mount('http://', adapter)
+            session.mount('https://', adapter)
+            page = session.get(df.at[i, 'Link'])
+
+            #page = requests.get(df.at[i, 'Link'])
             html_soup = soup(page.text,'html.parser')
             #Player/match details
             if not html_soup.find('h1', class_="bg") is None:
@@ -659,22 +687,225 @@ class Tennis_Downloads:
         print(t1)
         print("It actually took ",(t1-t0)," seconds.")        
 
-    def Update_Players(self):
+    def Update_IDs(self, db):
+        t0 = datetime.now()
         self.conn = sqlite3.connect(db)
         self.cur = self.conn.cursor()
-        self.cur.execute("SELECT * from links_odds_match")
-        Dates = [tup[1] for tup in self.cur.fetchall()]
-        self.cur.execute("SELECT * from links_odds_match")
-        links = [tup[0] for tup in self.cur.fetchall()]        
-        df = pd.DataFrame({'Dates':Dates, 'Link':links})
-        df['Dates'] = pd.to_datetime(df['Dates'], format='%d.%m.%Y')
-        df.sort_values('Dates', inplace=True)       
-
-        t0 = datetime.now()
-        for element in P2[5:15]:
-            closest.append(process.extractOne(str(element), P1))
-        print(datetime.now() - t0)
-
-    def __del__(self):
         
+        #1.1 Get data from DB
+        #get data from players list
+        self.cur.execute("SELECT * from players_master")
+        ID = [tup[0] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from players_master")
+        Name = [tup[1] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from players_master")
+        Birthday = [tup[3] for tup in self.cur.fetchall()]
+        df_play = pd.DataFrame({'ID':ID, 'Name':Name, 'Birthday':Birthday})
+        df_play.set_index('ID')
+        
+        
+        #1.2 get data for DBs where to adjust values
+        #odds
+        self.cur.execute("SELECT * from odds_master")
+        primary_odds = [tup[0] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from odds_master")
+        dates_odds = [tup[1] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from odds_master")
+        ID_odds = [tup[2] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from odds_master")
+        p1_odds = [tup[3] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from odds_master")
+        p2_odds = [tup[4] for tup in self.cur.fetchall()]
+        df_odds = pd.DataFrame({'Primary':primary_odds, 'Dates':dates_odds, 'ID':ID_odds, 'ID_check':ID_odds, 'Player1':p1_odds, 'Player2':p2_odds})
+        
+        #reg
+        self.cur.execute("SELECT * from reg_master")
+        primary_reg = [tup[0] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from reg_master")
+        dates_reg = [tup[1] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from reg_master")
+        ID_reg = [tup[2] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from reg_master")
+        p1_reg = [tup[3] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from reg_master")
+        p2_reg = [tup[4] for tup in self.cur.fetchall()]
+        df_reg = pd.DataFrame({'Primary':primary_reg, 'Dates':dates_reg, 'ID':ID_reg, 'ID_check':ID_reg, 'Player1':p1_reg, 'Player2':p2_reg})
+        df_reg = df_reg[df_reg['ID'].isnull()]
+        df_reg.reset_index(inplace = True)
+        df_reg.drop('index', axis=1, inplace = True)
+        
+        #ranking
+        
+        #2. Calculate Match IDs: P1**2 * P2**2 + timestamp
+        # odds_master
+        try:
+            missing_odds = df_odds.loc[df_odds['ID'] == 0]
+            print('In the odds DB there are ', len(missing_odds),' match IDs missing')
+            for i in range(0, len(df_odds['ID'])):
+                if df_odds.at[i, 'ID'] == 0:
+                    df_odds.at[i, 'ID'] = int(df_play[df_play['Name'] == df_odds.at[i, 'Player1']]['ID'].iloc[0]**2 * df_play[df_play['Name'] == df_odds.at[i, 'Player2']]['ID'].iloc[0]**2 + int(time.mktime(datetime.strptime(df_odds.at[i, 'Dates'], "%d.%m.%Y").timetuple())))
+        except:
+            pass
+        
+        #reg_master
+        
+        p1_reg = df_reg['Player1'].tolist()
+        p2_reg = df_reg['Player2'].tolist()
+        for player in p2_reg:
+            p1_reg.append(player)
+            
+        df_reg_alt = pd.DataFrame({'Player': p1_reg})
+        df_reg_alt.drop_duplicates('Player', inplace = True)
+        df_reg_alt.reset_index(inplace = True)
+        df_reg_alt.drop('index', axis=1, inplace = True)
+        
+        
+        #check if name is already in DB
+        for i in range(0, len(df_reg_alt['Player'])):
+            try:
+                df_reg_alt.at[i, 'PID'] = int(df_play[df_reg_alt.at[i, 'Player'] == df_play['Name_Reg']]['ID'])
+            except:
+                pass   
+        for i in range(0, len(df_reg_alt['Player'])):
+            if i == 0:
+                print('Initiating the word comparison...')
+            if i%100 == 0:
+                print('Progress: ', i/len(df_reg_alt['Player']) *100, '%')
+            if math.isnan(df_reg_alt.at[i, 'PID']) == True:
+                try:
+                    Player = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[0]
+                    df_reg_alt.at[i, 'Score'] = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[1]
+                    df_reg_alt.at[i, 'Player_DB'] = Player
+                    df_reg_alt.at[i, 'PID'] = int(df_play[df_play['Name'] == Player]['ID'].iloc[0])
+                except:
+                    pass
+            
+        #only keep if match is close enough
+        df_reg_alt = df_reg_alt[df_reg_alt['Score']>86]
+        df_reg_alt.reset_index(inplace = True)
+        df_reg_alt.drop('index', axis=1, inplace = True)
+        
+        for i in range(0, len(df_reg['ID'])):  
+            if i%100 == 0:
+                print('Progress: ', i/len(df_reg['Player1']))
+            try:
+                if len(df_reg.at[i, 'Dates']) == 8:
+                    df_reg.at[i, 'Dates'] = df_reg.at[i, 'Dates'][:5] + '.20' + df_reg.at[i, 'Dates'][6:8]
+            except:
+                pass
+            try:
+                df_reg.at[i, 'ID'] = int(df_reg_alt[df_reg_alt['Player'] == df_reg.at[i, 'Player1']]['PID'].iloc[0]**2 * df_reg_alt[df_reg_alt['Player'] == df_reg.at[i, 'Player2']]['PID'].iloc[0]**2 + int(time.mktime(datetime.strptime(df_reg.at[i, 'Dates'], "%d.%m.%Y").timetuple())))
+            except:
+                pass
+        
+        #3.update values in DBs
+        #odds_master
+        for i in range(0, len(df_odds['ID'])):
+            if df_odds.at[i, 'ID_check'] == 0:
+                self.cur.execute("UPDATE odds_master SET MatchID = ? WHERE Link = ?", (int(df_odds.at[i, 'ID']), df_odds.at[i, 'Primary']))
+                self.conn.commit()
+        print('Match IDs for odds_master updated, step 1/3')
+        
+        #reg
+        for i in range(0, len(df_reg['ID'])):
+            if i == 0:
+                print('Initiating the time intense upload to the db...')
+            if i%100 == 0:
+                print('Progress: ', i/len(df_reg_alt['Player']) *100, '%')
+            if math.isnan(df_reg.at[i, 'ID_check']):
+                if df_reg.at[i, 'ID'] != 0:
+                    try:
+                        self.cur.execute("UPDATE reg_master SET MatchID = ? WHERE Link = ?", (int(df_reg.at[i, 'ID']), df_reg.at[i, 'Primary']))
+                        self.cur.execute("UPDATE reg_master SET Dates = ? WHERE Link = ?", (df_reg.at[i, 'Dates'], df_reg.at[i, 'Primary']))
+                        self.conn.commit()        
+                    except:
+                        pass
+        print('Match IDs for reg_master updated, step 2/3')
+        
+        #ranking (P ID)
+        
+        
+        
+        t1 = datetime.now()
+        print(t1)
+        print("It actually took ",(t1-t0)," seconds.")
+        
+    def Update_Players(self, db):
+        #extract data from DB odds
+        t0 = datetime.now()
+        self.conn = sqlite3.connect(db)
+        self.cur = self.conn.cursor()
+        self.cur.execute("SELECT * from odds_master")
+        Player1 = [tup[3] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from odds_master")
+        Player2 = [tup[4] for tup in self.cur.fetchall()]  
+        self.cur.execute("SELECT * from odds_master")
+        Birthday1 = [tup[10] for tup in self.cur.fetchall()] 
+        self.cur.execute("SELECT * from odds_master")
+        Birthday2 = [tup[11] for tup in self.cur.fetchall()]  
+        self.cur.execute("SELECT * from odds_master")
+        Hand1 = [tup[16] for tup in self.cur.fetchall()]  
+        self.cur.execute("SELECT * from odds_master")
+        Hand2 = [tup[17] for tup in self.cur.fetchall()]  
+        #extract data from DB player masters
+        self.cur.execute("SELECT * from players_master")
+        Player_Mas = [tup[1] for tup in self.cur.fetchall()] 
+        self.cur.execute("SELECT * from players_master")
+        ID_Mas = [tup[0] for tup in self.cur.fetchall()] 
+        self.cur.execute("SELECT * from players_master")
+        Hand_Mas = [tup[2] for tup in self.cur.fetchall()] 
+        self.cur.execute("SELECT * from players_master")
+        Birthday_Mas = [tup[3] for tup in self.cur.fetchall()] 
+        
+        #get one list
+        for player in Player2:
+            Player1.append(player)
+        for birthday in Birthday2:
+            Birthday1.append(birthday)
+        for hand in Hand2:
+            Hand1.append(hand)
+        
+        #get DF with individual players
+        df = pd.DataFrame({'Player':Player1, 'Birthday':Birthday1, 'Hand':Hand1})
+        df.drop_duplicates('Player', inplace = True)
+        df.reset_index(inplace = True)
+        
+        #check if player in DB, if not, append
+        for i in range(0, len(df['Player'])):
+            try:
+                if not df.at[i, 'Player'] in Player_Mas:
+                    Player_Mas.append(df.at[i, 'Player'])
+                    try:
+                        ID_Mas.append(ID_Mas[-1] + 1)
+                    except:
+                        ID_Mas.append(1)
+                    Hand_Mas.append(df.at[i, 'Hand'])
+                    Birthday_Mas.append(df.at[i, 'Birthday'])
+                else:
+                    pass
+            except:
+                pass
+        df_mas = pd.DataFrame({'ID':ID_Mas, 'Name':Player_Mas, 'Hand':Hand_Mas, 'Birthday':Birthday_Mas})
+        for i in range(0, len(df_mas['Birthday'])):
+            try:
+                df_mas.at[i, 'Birthday'] = datetime.strptime(df_mas.at[i, 'Birthday'], "%Y-%m-%d").strftime("%d.%m.%Y")
+            except:
+                pass
+        
+        #Update in DB
+        for i in range(0, len(df_mas['ID'])):
+            try:
+                self.cur.execute("INSERT INTO players_master VALUES (?, ?, ?, ?)", (int(df_mas.at[i, 'ID']), df_mas.at[i, 'Name'], df_mas.at[i, 'Hand'], df_mas.at[i, 'Birthday']))
+                self.conn.commit()
+            except:
+                pass        
+        
+        print('The update took', datetime.now() - t0, ' seconds. There are ', len(df_mas['ID']), ' Players in the DB.')
+        
+    def Map_Out(self, db):
+        print('Function in progress...')
+        print(db)
+    
+    def __del__(self):
         self.conn.close()
+        print('Bye bye, connection to DB is closed.')

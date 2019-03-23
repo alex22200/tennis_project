@@ -54,18 +54,20 @@ class Window(object):
 
 		b8=Button(window,text="Download Rank", width=18, command=self.Run_Download_Rank)
 		b8.grid(row=2,column=3)		
+        
+		b9=Button(window,text="Update Players", width=18, command=self.Run_Update_Players)
+		b9.grid(row=2,column=5)		        
 
-		b7=Button(window,text="Update IDs", width=18)
+		b7=Button(window,text="Update IDs", width=18, command=self.Run_Update_IDs)
 		b7.grid(row=3,column=5)	
 
-		b4=Button(window,text="Export", width=18)
+		b4=Button(window,text="Map Output", width=18, command=self.Run_Map_Out)
 		b4.grid(row=3,column=3)
 
 		b6=Button(window,text="Close", width=18,command=window.destroy)
 		b6.grid(row=4,column=3)
 
-		#b8=Button(window,text="Update Players", width=18, command=Run_Update_Players)
-		#b8.grid(row=3,column=5)	
+
 
 	def Run_Download_Links_Odds(self):
 		if self.end_date.get() == '':
@@ -123,8 +125,14 @@ class Window(object):
 			Tennis_Downloads.Ranking_Down(self, self.start_date.get(), EndDt, float(NumDs), "tennis.db")
 
 
-	#def Run_Update_Players(self):
-	#	Tennis_Downloads.Update_Players(self)
+	def Run_Update_Players(self):
+		Tennis_Downloads.Update_Players(self, "tennis.db")
+        
+	def Run_Update_IDs(self):
+		Tennis_Downloads.Update_IDs(self, "tennis.db")
+        
+	def Run_Map_Out(self):
+		Tennis_Downloads.Map_Out(self, "tennis.db")
 
 
 window = Tk()
