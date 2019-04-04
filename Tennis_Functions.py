@@ -18,13 +18,30 @@ class Tennis_Downloads:
         self.cur.execute("CREATE TABLE IF NOT EXISTS links_reg (Dates DATE PRIMARY KEY, link TEXT)")
         self.cur.execute("CREATE TABLE IF NOT EXISTS links_odds_match (Link TEXT PRIMARY KEY, Dates date)")
         self.cur.execute("CREATE TABLE IF NOT EXISTS links_reg_match (Link TEXT PRIMARY KEY, Dates date)")
-        #self.cur.execute("DROP TABLE odds_master")
+        #self.cur.execute("DROP TABLE output_master")
         #self.cur.execute("CREATE TABLE IF NOT EXISTS odds_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Info TEXT, Location TEXT, Score TEXT, Ranking1 INTEGER, Ranking2 INTEGER, Birthday1 Date, Birthday2 DATE, Height1 REAL, Height2 REAL, Weight1 REAL, Weight2 REAL, Hand1 TEXT, Hand2 TEXT, Pro1 INTEGER, Pro2 INTEGER, O_2_5_sets REAL, U_2_5_sets REAL,  O_3_sets REAL,  U_3_sets REAL,  O_3_5_sets REAL,  U_3_5_sets REAL,  O_4_sets REAL,  U_4_sets REAL,  O_4_5_sets REAL,  U_4_5_sets REAL,  O_14_5_games REAL,  U_14_5_games REAL,  O_15_games REAL,  U_15_games REAL,  O_15_5_games REAL,  U_15_5_games REAL,  O_16_games REAL,  U_16_games REAL,  O_16_5_games REAL,  U_16_5_games REAL,  O_17_games REAL,  U_17_games REAL,  O_17_5_games REAL,  U_17_5_games REAL,  O_18_games REAL,  U_18_games REAL,  O_18_5_games REAL,  U_18_5_games REAL,  O_19_games REAL,  U_19_games REAL,  O_19_5_games REAL,  U_19_5_games REAL,  O_20_games REAL,  U_20_games REAL,  O_20_5_games REAL,  U_20_5_games REAL,  O_21_games REAL,  U_21_games REAL,  O_21_5_games REAL,  U_21_5_games REAL,  O_22_games REAL,  U_22_games REAL,  O_22_5_games REAL,  U_22_5_games REAL,  O_23_games REAL,  U_23_games REAL,  O_23_5_games REAL,  U_23_5_games REAL,  O_24_games REAL,  U_24_games REAL,  O_24_5_games REAL,  U_24_5_games REAL,  O_25_games REAL,  U_25_games REAL,  O_25_5_games REAL,  U_25_5_games REAL,  O_26_games REAL,  U_26_games REAL,  O_26_5_games REAL,  U_26_5_games REAL,  O_27_games REAL,  U_27_games REAL,  O_27_5_games REAL,  U_27_5_games REAL,  O_28_games REAL,  U_28_games REAL,  O_28_5_games REAL,  U_28_5_games REAL,  O_29_games REAL,  U_29_games REAL,  O_29_5_games REAL,  U_29_5_games REAL,  O_30_games REAL,  U_30_games REAL,  O_30_5_games REAL,  U_30_5_games REAL,  O_31_games REAL,  U_31_games REAL,  O_31_5_games REAL,  U_31_5_games REAL,  O_32_games REAL,  U_32_games REAL,  O_32_5_games REAL,  U_32_5_games REAL,  O_33_games REAL,  U_33_games REAL,  O_33_5_games REAL,  U_33_5_games REAL,  O_34_games REAL,  U_34_games REAL,  O_34_5_games REAL,  U_34_5_games REAL,  O_35_games REAL,  U_35_games REAL,  O_35_5_games REAL,  U_35_5_games REAL,  O_36_games REAL,  U_36_games REAL,  O_36_5_games REAL,  U_36_5_games REAL,  O_37_games REAL,  U_37_games REAL,  AH__1_5_sets_1 REAL,  AH__1_5_sets_2 REAL,  AH__1_5_games_1 REAL,  AH__1_5_games_2 REAL,  AH_1_5_sets_1 REAL,  AH_1_5_sets_2 REAL,  AH__7_games_1 REAL,  AH__7_games_2 REAL,  AH__6_5_games_1 REAL,  AH__6_5_games_2 REAL,  AH__6_games_1 REAL,  AH__6_games_2 REAL,  AH__5_5_games_1 REAL,  AH__5_5_games_2 REAL,  AH__5_games_1 REAL,  AH__5_games_2 REAL,  AH__4_5_games_1 REAL,  AH__4_5_games_2 REAL,  AH__4_games_1 REAL,  AH__4_games_2 REAL,  AH__3_5_games_1 REAL,  AH__3_5_games_2 REAL,  AH__3_games_1 REAL,  AH__3_games_2 REAL,  AH__2_5_games_1 REAL,  AH__2_5_games_2 REAL,  AH__2_games_1 REAL,  AH__2_games_2 REAL,  AH__1_games_1 REAL,  AH__1_games_2 REAL,  AH__0_5_games_1 REAL,  AH__0_5_games_2 REAL,  AH_0_games_1 REAL,  AH_0_games_2 REAL,  AH_0_5_games_1 REAL,  AH_0_5_games_2 REAL,  AH_1_games_1 REAL,  AH_1_games_2 REAL,  AH_1_5_games_1 REAL,  AH_1_5_games_2 REAL,  AH_2_games_1 REAL,  AH_2_games_2 REAL,  AH_2_5_games_1 REAL,  AH_2_5_games_2 REAL,  AH_3_games_1 REAL,  AH_3_games_2 REAL,  AH_3_5_games_1 REAL,  AH_3_5_games_2 REAL,  AH_4_games_1 REAL,  AH_4_games_2 REAL,  AH_4_5_games_1 REAL,  AH_4_5_games_2 REAL,  AH_5_games_1 REAL,  AH_5_games_2 REAL,  AH_5_5_games_1 REAL,  AH_5_5_games_2 REAL,  AH_6_games_1 REAL,  AH_6_games_2 REAL,  AH_6_5_games_1 REAL,  AH_6_5_games_2 REAL,  AH_7_games_1 REAL,  AH_7_games_2 REAL,  AH_7_5_games_1 REAL,  AH_7_5_games_2 REAL,  Correct_Score_3_0 REAL,  Correct_Score_2_0 REAL,  Correct_Score_2_1 REAL,  Correct_Score_3_1 REAL,  Correct_Score_3_2 REAL,  Correct_Score_0_3 REAL,  Correct_Score_0_2 REAL,  Correct_Score_1_2 REAL,  Correct_Score_1_3 REAL,  Correct_Score_2_3 REAL)")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS odds_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Info TEXT, Location TEXT, Score TEXT, Ranking1 INTEGER, Ranking2 INTEGER, Birthday1 Date, Birthday2 DATE, Height1 REAL, Height2 REAL, Weight1 REAL, Weight2 REAL, Hand1 TEXT, Hand2 TEXT, Pro1 INTEGER, Pro2 INTEGER, Home INTEGER, Away INTEGER)")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS reg_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Round TEXT, Score TEXT, Location TEXT, Surface TEXT, First_Serve_P1 TEXT, First_Serve_Points_Won_P1 TEXT, Second_Serve_Points_Won_P1 TEXT, Break_Points_Won_P1 TEXT, Total_Return_Points_Won_P1 TEXT, Total_Points_Won_P1 TEXT, Double_Faults_P1 INTEGER, Aces_P1 INTEGER, First_Serve_P2 TEXT, First_Serve_Points_Won_P2 TEXT, Second_Serve_Points_Won_P2 TEXT, Break_Points_Won_P2 TEXT, Total_Return_Points_Won_P2 TEXT, Total_Points_Won_P2 TEXT, Double_Faults_P2 INTEGER, Aces_P2 INTEGER)")
+        self.cur.execute('''CREATE TABLE IF NOT EXISTS odds_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Info TEXT, 
+                                                                  Location TEXT, Score TEXT, Ranking1 INTEGER, Ranking2 INTEGER, Birthday1 Date, Birthday2 DATE, Height1 REAL, 
+                                                                  Height2 REAL, Weight1 REAL, Weight2 REAL, Hand1 TEXT, Hand2 TEXT, Pro1 INTEGER, Pro2 INTEGER, Home INTEGER, 
+                                                                  Away INTEGER)''')
+        self.cur.execute('''CREATE TABLE IF NOT EXISTS reg_master (Link TEXT PRIMARY KEY, Dates date, MatchID INTEGER, Player1 TEXT, Player2 TEXT, Round TEXT, 
+                                                                   Score TEXT, Location TEXT, Surface TEXT, First_Serve_P1 TEXT, First_Serve_Points_Won_P1 TEXT, 
+                                                                   Second_Serve_Points_Won_P1 TEXT, Break_Points_Won_P1 TEXT, Total_Return_Points_Won_P1 TEXT, 
+                                                                   Total_Points_Won_P1 TEXT, Double_Faults_P1 INTEGER, Aces_P1 INTEGER, First_Serve_P2 TEXT, 
+                                                                   First_Serve_Points_Won_P2 TEXT, Second_Serve_Points_Won_P2 TEXT, Break_Points_Won_P2 TEXT, 
+                                                                   Total_Return_Points_Won_P2 TEXT, Total_Points_Won_P2 TEXT, Double_Faults_P2 INTEGER, Aces_P2 INTEGER)''')
         #This is filled with user input, need initialize with values from the most comprehensive download, then update function to get newest players in
         self.cur.execute("CREATE TABLE IF NOT EXISTS players_master (PlayerID INTEGER PRIMARY KEY, Name TEXT, Hand TEXT, Birthdate DATE)")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS ranking_master (Ident TEXT PRIMARY KEY, PlayerID INTEGER, link TEXT, rank INTEGER, Dates DATE, Name TEXT, Age INTEGER, Points INTEGER, Tourn_Played INTEGER)")
+        self.cur.execute('''CREATE TABLE IF NOT EXISTS ranking_master (Ident TEXT PRIMARY KEY, PlayerID INTEGER, link TEXT, 
+                                                                     rank INTEGER, Dates DATE, Name TEXT, Age INTEGER, Points INTEGER, Tourn_Played INTEGER)''')
+        self.cur.execute('''CREATE TABLE IF NOT EXISTS output_master (MatchID INTEGER PRIMARY KEY, Birthday_1 DATE, Birthday_2 DATE, Date DATE, Hand_1 TEXT, Hand_2 TEXT,
+                                                                      Odds_1 REAL, Odds_2 REAL, Score TEXT, Aces_1 INTEGER, Aces_2 INTEGER, Break_Points_1 TEXT,
+                                                                      Break_Points_2 TEXT, Double_Faults_1 TEXT, Double_Faults_2 TEXT, First_Serve_Percentage_1 TEXT,
+                                                                      First_Serve_Percentage_2 TEXT, First_Serve_Points_Won_1 TEXT, First_Serve_Points_Won_2 TEXT,
+                                                                      Location TEXT, Player_1 TEXT, Player_2 TEXT,
+                                                                      Return_Points_Won_1 TEXT, Return_Points_Won_2 TEXT, Round TEXT, Second_Serve_Points_Won_1 TEXT,
+                                                                      Second_Serve_Points_Won_2 TEXT, Surface TEXT, Total_Points_1 TEXT, Total_Points_2 TEXT, Player_ID_1 INTEGER,
+                                                                      Player_ID_2 INTEGER, Rank_1 INTEGER, Rank_2 INTEGER)''')
         self.conn.commit()
 
     def Download_Links_Odds(self, StDt, EndDt, Days, db):
@@ -169,9 +186,11 @@ class Tennis_Downloads:
         print('Matches to download: ',len(df['Link']))
         print('Estimated finish time: ',(t0 + timedelta(seconds=(time_to_download*len(df['Link'])))))
         for f in range(0,len(df['Link'])):  
+            if f == 0:
+                print('Initiating the reg download...')
             #Progress
             if f%1000 == 0:
-                print('Progress: ', round(f/len(df['Link']),2))
+                print('Progress: ', round(f/len(df['Link']) * 100, 2), '%')
             page = requests.get(df.at[f, 'Link'])
             html_soup = soup(page.text,'html.parser')
             if html_soup.find('tr', class_='tour_head unpair') is not None:
@@ -215,7 +234,13 @@ class Tennis_Downloads:
                             
         for i in range(0,len(df['Link'])):
             try:
-                self.cur.execute("INSERT INTO reg_master VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (df.at[i, 'Link'], df.at[i, 'Date'], df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Round'], df.at[i, 'Score'], df.at[i, 'Location'], df.at[i, 'Surface'], df.at[i, '1st Serve % P1'], df.at[i, '1st Serve Points Won P1'], df.at[i, '2nd Serve Points Won P1'], df.at[i, 'BREAK POINTS WON P1'], df.at[i, 'TOTAL RETURN POINTS WON P1'], df.at[i, 'TOTAL POINTS WON P1'], df.at[i, 'DOUBLE FAULTS P1'], df.at[i, 'ACES P1'], df.at[i, '1st Serve % P2'], df.at[i, '1st Serve Points Won P2'], df.at[i, '2nd Serve Points Won P2'], df.at[i, 'BREAK POINTS WON P2'], df.at[i, 'TOTAL RETURN POINTS WON P2'], df.at[i, 'TOTAL POINTS WON P2'], df.at[i, 'DOUBLE FAULTS P2'], df.at[i, 'ACES P2']))
+                self.cur.execute("INSERT INTO reg_master VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+                                 (df.at[i, 'Link'], df.at[i, 'Date'], df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Round'], df.at[i, 'Score'], 
+                                  df.at[i, 'Location'], df.at[i, 'Surface'], df.at[i, '1st Serve % P1'], df.at[i, '1st Serve Points Won P1'], 
+                                  df.at[i, '2nd Serve Points Won P1'], df.at[i, 'BREAK POINTS WON P1'], df.at[i, 'TOTAL RETURN POINTS WON P1'], 
+                                  df.at[i, 'TOTAL POINTS WON P1'], df.at[i, 'DOUBLE FAULTS P1'], df.at[i, 'ACES P1'], df.at[i, '1st Serve % P2'], 
+                                  df.at[i, '1st Serve Points Won P2'], df.at[i, '2nd Serve Points Won P2'], df.at[i, 'BREAK POINTS WON P2'], 
+                                  df.at[i, 'TOTAL RETURN POINTS WON P2'], df.at[i, 'TOTAL POINTS WON P2'], df.at[i, 'DOUBLE FAULTS P2'], df.at[i, 'ACES P2']))
                 self.conn.commit()
             except:
                 pass
@@ -262,9 +287,11 @@ class Tennis_Downloads:
 
 
         for i in range(0,len(df['Link'])): 
+            if i == 0:
+                print('Initiating the odds download...')
             #Progress
             if i%1000 == 0:
-                print('Progress: ', round(i/len(df['Link']),2))
+                print('Progress: ', round(i/len(df['Link']) * 100,2), '%')
             #added this part to solve the connection issue
             session = requests.Session()
             retry = Retry(connect = 3, backoff_factor = 0.5)
@@ -600,8 +627,52 @@ class Tennis_Downloads:
 
         for i in range(0,len(df['Link'])):
             try:
-                #self.cur.execute("INSERT INTO odds_master VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (df.at[i, 'Link'], df.at[i, 'Date'], df.at[i, 'MatchID'], df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Info'], df.at[i, 'Location'], df.at[i, 'Score'], df.at[i, 'Ranking1'], df.at[i, 'Ranking2'], df.at[i, 'Birthday1'], df.at[i, 'Birthday2'], df.at[i, 'Height1'], df.at[i, 'Height2'], df.at[i, 'Weight1'], df.at[i, 'Weight2'], df.at[i, 'Hand1'], df.at[i, 'Hand2'], df.at[i, 'Pro1'], df.at[i, 'Pro2'], df.at[i, 'O 2.5 sets'], df.at[i, 'U 2.5 sets'], df.at[i, 'O 3 sets'], df.at[i, 'U 3 sets'], df.at[i, 'O 3.5 sets'], df.at[i, 'U 3.5 sets'], df.at[i, 'O 4 sets'], df.at[i, 'U 4 sets'], df.at[i, 'O 4.5 sets'], df.at[i, 'U 4.5 sets'], df.at[i, 'O 14.5 games'], df.at[i, 'U 14.5 games'], df.at[i, 'O 15 games'], df.at[i, 'U 15 games'], df.at[i, 'O 15.5 games'], df.at[i, 'U 15.5 games'], df.at[i, 'O 16 games'], df.at[i, 'U 16 games'], df.at[i, 'O 16.5 games'], df.at[i, 'U 16.5 games'], df.at[i, 'O 17 games'], df.at[i, 'U 17 games'], df.at[i, 'O 17.5 games'], df.at[i, 'U 17.5 games'], df.at[i, 'O 18 games'], df.at[i, 'U 18 games'], df.at[i, 'O 18.5 games'], df.at[i, 'U 18.5 games'], df.at[i, 'O 19 games'], df.at[i, 'U 19 games'], df.at[i, 'O 19.5 games'], df.at[i, 'U 19.5 games'], df.at[i, 'O 20 games'], df.at[i, 'U 20 games'], df.at[i, 'O 20.5 games'], df.at[i, 'U 20.5 games'], df.at[i, 'O 21 games'], df.at[i, 'U 21 games'], df.at[i, 'O 21.5 games'], df.at[i, 'U 21.5 games'], df.at[i, 'O 22 games'], df.at[i, 'U 22 games'], df.at[i, 'O 22.5 games'], df.at[i, 'U 22.5 games'], df.at[i, 'O 23 games'], df.at[i, 'U 23 games'], df.at[i, 'O 23.5 games'], df.at[i, 'U 23.5 games'], df.at[i, 'O 24 games'], df.at[i, 'U 24 games'], df.at[i, 'O 24.5 games'], df.at[i, 'U 24.5 games'], df.at[i, 'O 25 games'], df.at[i, 'U 25 games'], df.at[i, 'O 25.5 games'], df.at[i, 'U 25.5 games'], df.at[i, 'O 26 games'], df.at[i, 'U 26 games'], df.at[i, 'O 26.5 games'], df.at[i, 'U 26.5 games'], df.at[i, 'O 27 games'], df.at[i, 'U 27 games'], df.at[i, 'O 27.5 games'], df.at[i, 'U 27.5 games'], df.at[i, 'O 28 games'], df.at[i, 'U 28 games'], df.at[i, 'O 28.5 games'], df.at[i, 'U 28.5 games'], df.at[i, 'O 29 games'], df.at[i, 'U 29 games'], df.at[i, 'O 29.5 games'], df.at[i, 'U 29.5 games'], df.at[i, 'O 30 games'], df.at[i, 'U 30 games'], df.at[i, 'O 30.5 games'], df.at[i, 'U 30.5 games'], df.at[i, 'O 31 games'], df.at[i, 'U 31 games'], df.at[i, 'O 31.5 games'], df.at[i, 'U 31.5 games'], df.at[i, 'O 32 games'], df.at[i, 'U 32 games'], df.at[i, 'O 32.5 games'], df.at[i, 'U 32.5 games'], df.at[i, 'O 33 games'], df.at[i, 'U 33 games'], df.at[i, 'O 33.5 games'], df.at[i, 'U 33.5 games'], df.at[i, 'O 34 games'], df.at[i, 'U 34 games'], df.at[i, 'O 34.5 games'], df.at[i, 'U 34.5 games'], df.at[i, 'O 35 games'], df.at[i, 'U 35 games'], df.at[i, 'O 35.5 games'], df.at[i, 'U 35.5 games'], df.at[i, 'O 36 games'], df.at[i, 'U 36 games'], df.at[i, 'O 36.5 games'], df.at[i, 'U 36.5 games'], df.at[i, 'O 37 games'], df.at[i, 'U 37 games'], df.at[i, 'AH -1.5 sets 1'], df.at[i, 'AH -1.5 sets 2'], df.at[i, 'AH -1.5 games 1'], df.at[i, 'AH -1.5 games 2'], df.at[i, 'AH 1.5 sets 1'], df.at[i, 'AH 1.5 sets 2'], df.at[i, 'AH -7 games 1'], df.at[i, 'AH -7 games 2'], df.at[i, 'AH -6.5 games 1'], df.at[i, 'AH -6.5 games 2'], df.at[i, 'AH -6 games 1'], df.at[i, 'AH -6 games 2'], df.at[i, 'AH -5.5 games 1'], df.at[i, 'AH -5.5 games 2'], df.at[i, 'AH -5 games 1'], df.at[i, 'AH -5 games 2'], df.at[i, 'AH -4.5 games 1'], df.at[i, 'AH -4.5 games 2'], df.at[i, 'AH -4 games 1'], df.at[i, 'AH -4 games 2'], df.at[i, 'AH -3.5 games 1'], df.at[i, 'AH -3.5 games 2'], df.at[i, 'AH -3 games 1'], df.at[i, 'AH -3 games 2'], df.at[i, 'AH -2.5 games 1'], df.at[i, 'AH -2.5 games 2'], df.at[i, 'AH -2 games 1'], df.at[i, 'AH -2 games 2'], df.at[i, 'AH -1 games 1'], df.at[i, 'AH -1 games 2'], df.at[i, 'AH -0.5 games 1'], df.at[i, 'AH -0.5 games 2'], df.at[i, 'AH 0 games 1'], df.at[i, 'AH 0 games 2'], df.at[i, 'AH 0.5 games 1'], df.at[i, 'AH 0.5 games 2'], df.at[i, 'AH 1 games 1'], df.at[i, 'AH 1 games 2'], df.at[i, 'AH 1.5 games 1'], df.at[i, 'AH 1.5 games 2'], df.at[i, 'AH 2 games 1'], df.at[i, 'AH 2 games 2'], df.at[i, 'AH 2.5 games 1'], df.at[i, 'AH 2.5 games 2'], df.at[i, 'AH 3 games 1'], df.at[i, 'AH 3 games 2'], df.at[i, 'AH 3.5 games 1'], df.at[i, 'AH 3.5 games 2'], df.at[i, 'AH 4 games 1'], df.at[i, 'AH 4 games 2'], df.at[i, 'AH 4.5 games 1'], df.at[i, 'AH 4.5 games 2'], df.at[i, 'AH 5 games 1'], df.at[i, 'AH 5 games 2'], df.at[i, 'AH 5.5 games 1'], df.at[i, 'AH 5.5 games 2'], df.at[i, 'AH 6 games 1'], df.at[i, 'AH 6 games 2'], df.at[i, 'AH 6.5 games 1'], df.at[i, 'AH 6.5 games 2'], df.at[i, 'AH 7 games 1'], df.at[i, 'AH 7 games 2'], df.at[i, 'AH 7.5 games 1'], df.at[i, 'AH 7.5 games 2'], df.at[i, 'Correct Score 3:0'], df.at[i, 'Correct Score 2:0'], df.at[i, 'Correct Score 2:1'], df.at[i, 'Correct Score 3:1'], df.at[i, 'Correct Score 3:2'], df.at[i, 'Correct Score 0:3'], df.at[i, 'Correct Score 0:2'], df.at[i, 'Correct Score 1:2'], df.at[i, 'Correct Score 1:3'], df.at[i, 'Correct Score 2:3']))
-                self.cur.execute("INSERT INTO odds_master VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (df.at[i, 'Link'], df.at[i, 'Date'], 0, df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Info'], df.at[i, 'Location'], df.at[i, 'Score'], df.at[i, 'Ranking1'], df.at[i, 'Ranking2'], datetime.strptime(str(df.at[i, 'Birthdate1']), '%d.%m.%Y').date(), datetime.strptime(str(df.at[i, 'Birthdate2']), '%d.%m.%Y').date(), df.at[i, 'Height1'], df.at[i, 'Height2'], df.at[i, 'Weight1'], df.at[i, 'Weight2'], df.at[i, 'Hand1'], df.at[i, 'Hand2'], df.at[i, 'Pro1'], df.at[i, 'Pro2'], df.at[i, 'Home'], df.at[i, 'Away']))
+                #self.cur.execute('''INSERT INTO odds_master VALUES (?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                #?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                #?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                #?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 
+                #?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', 
+                #(df.at[i, 'Link'], df.at[i, 'Date'], df.at[i, 'MatchID'], df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Info'], df.at[i, 'Location'], 
+                #df.at[i, 'Score'], df.at[i, 'Ranking1'], df.at[i, 'Ranking2'], df.at[i, 'Birthday1'], df.at[i, 'Birthday2'], df.at[i, 'Height1'], 
+                #df.at[i, 'Height2'], df.at[i, 'Weight1'], df.at[i, 'Weight2'], df.at[i, 'Hand1'], df.at[i, 'Hand2'], df.at[i, 'Pro1'], df.at[i, 'Pro2'], 
+                #df.at[i, 'O 2.5 sets'], df.at[i, 'U 2.5 sets'], df.at[i, 'O 3 sets'], df.at[i, 'U 3 sets'], df.at[i, 'O 3.5 sets'], df.at[i, 'U 3.5 sets'], 
+                #df.at[i, 'O 4 sets'], df.at[i, 'U 4 sets'], df.at[i, 'O 4.5 sets'], df.at[i, 'U 4.5 sets'], df.at[i, 'O 14.5 games'], df.at[i, 'U 14.5 games'], 
+                #df.at[i, 'O 15 games'], df.at[i, 'U 15 games'], df.at[i, 'O 15.5 games'], df.at[i, 'U 15.5 games'], df.at[i, 'O 16 games'], df.at[i, 'U 16 games'], 
+                #df.at[i, 'O 16.5 games'], df.at[i, 'U 16.5 games'], df.at[i, 'O 17 games'], df.at[i, 'U 17 games'], df.at[i, 'O 17.5 games'], df.at[i, 'U 17.5 games'], 
+                #df.at[i, 'O 18 games'], df.at[i, 'U 18 games'], df.at[i, 'O 18.5 games'], df.at[i, 'U 18.5 games'], df.at[i, 'O 19 games'], df.at[i, 'U 19 games'], 
+                #df.at[i, 'O 19.5 games'], df.at[i, 'U 19.5 games'], df.at[i, 'O 20 games'], df.at[i, 'U 20 games'], df.at[i, 'O 20.5 games'], df.at[i, 'U 20.5 games'], 
+                #df.at[i, 'O 21 games'], df.at[i, 'U 21 games'], df.at[i, 'O 21.5 games'], df.at[i, 'U 21.5 games'], df.at[i, 'O 22 games'], df.at[i, 'U 22 games'], 
+                #df.at[i, 'O 22.5 games'], df.at[i, 'U 22.5 games'], df.at[i, 'O 23 games'], df.at[i, 'U 23 games'], df.at[i, 'O 23.5 games'], df.at[i, 'U 23.5 games'], 
+                #df.at[i, 'O 24 games'], df.at[i, 'U 24 games'], df.at[i, 'O 24.5 games'], df.at[i, 'U 24.5 games'], df.at[i, 'O 25 games'], df.at[i, 'U 25 games'], 
+                #df.at[i, 'O 25.5 games'], df.at[i, 'U 25.5 games'], df.at[i, 'O 26 games'], df.at[i, 'U 26 games'], df.at[i, 'O 26.5 games'], df.at[i, 'U 26.5 games'], 
+                #df.at[i, 'O 27 games'], df.at[i, 'U 27 games'], df.at[i, 'O 27.5 games'], df.at[i, 'U 27.5 games'], df.at[i, 'O 28 games'], df.at[i, 'U 28 games'], 
+                #df.at[i, 'O 28.5 games'], df.at[i, 'U 28.5 games'], df.at[i, 'O 29 games'], df.at[i, 'U 29 games'], df.at[i, 'O 29.5 games'], df.at[i, 'U 29.5 games'], 
+                #df.at[i, 'O 30 games'], df.at[i, 'U 30 games'], df.at[i, 'O 30.5 games'], df.at[i, 'U 30.5 games'], df.at[i, 'O 31 games'], df.at[i, 'U 31 games'], 
+                #df.at[i, 'O 31.5 games'], df.at[i, 'U 31.5 games'], df.at[i, 'O 32 games'], df.at[i, 'U 32 games'], df.at[i, 'O 32.5 games'], df.at[i, 'U 32.5 games'], 
+                #df.at[i, 'O 33 games'], df.at[i, 'U 33 games'], df.at[i, 'O 33.5 games'], df.at[i, 'U 33.5 games'], df.at[i, 'O 34 games'], df.at[i, 'U 34 games'], 
+                #df.at[i, 'O 34.5 games'], df.at[i, 'U 34.5 games'], df.at[i, 'O 35 games'], df.at[i, 'U 35 games'], df.at[i, 'O 35.5 games'], df.at[i, 'U 35.5 games'], 
+                #df.at[i, 'O 36 games'], df.at[i, 'U 36 games'], df.at[i, 'O 36.5 games'], df.at[i, 'U 36.5 games'], df.at[i, 'O 37 games'], df.at[i, 'U 37 games'], 
+                #df.at[i, 'AH -1.5 sets 1'], df.at[i, 'AH -1.5 sets 2'], df.at[i, 'AH -1.5 games 1'], df.at[i, 'AH -1.5 games 2'], df.at[i, 'AH 1.5 sets 1'], 
+                #df.at[i, 'AH 1.5 sets 2'], df.at[i, 'AH -7 games 1'], df.at[i, 'AH -7 games 2'], df.at[i, 'AH -6.5 games 1'], df.at[i, 'AH -6.5 games 2'], 
+                #df.at[i, 'AH -6 games 1'], df.at[i, 'AH -6 games 2'], df.at[i, 'AH -5.5 games 1'], df.at[i, 'AH -5.5 games 2'], df.at[i, 'AH -5 games 1'], 
+                #df.at[i, 'AH -5 games 2'], df.at[i, 'AH -4.5 games 1'], df.at[i, 'AH -4.5 games 2'], df.at[i, 'AH -4 games 1'], df.at[i, 'AH -4 games 2'], 
+                #df.at[i, 'AH -3.5 games 1'], df.at[i, 'AH -3.5 games 2'], df.at[i, 'AH -3 games 1'], df.at[i, 'AH -3 games 2'], df.at[i, 'AH -2.5 games 1'], 
+                #df.at[i, 'AH -2.5 games 2'], df.at[i, 'AH -2 games 1'], df.at[i, 'AH -2 games 2'], df.at[i, 'AH -1 games 1'], df.at[i, 'AH -1 games 2'], 
+                #df.at[i, 'AH -0.5 games 1'], df.at[i, 'AH -0.5 games 2'], df.at[i, 'AH 0 games 1'], df.at[i, 'AH 0 games 2'], df.at[i, 'AH 0.5 games 1'], 
+                #df.at[i, 'AH 0.5 games 2'], df.at[i, 'AH 1 games 1'], df.at[i, 'AH 1 games 2'], df.at[i, 'AH 1.5 games 1'], df.at[i, 'AH 1.5 games 2'], 
+                #df.at[i, 'AH 2 games 1'], df.at[i, 'AH 2 games 2'], df.at[i, 'AH 2.5 games 1'], df.at[i, 'AH 2.5 games 2'], df.at[i, 'AH 3 games 1'], 
+                #df.at[i, 'AH 3 games 2'], df.at[i, 'AH 3.5 games 1'], df.at[i, 'AH 3.5 games 2'], df.at[i, 'AH 4 games 1'], df.at[i, 'AH 4 games 2'], df.at[i, 'AH 4.5 games 1'], 
+                #df.at[i, 'AH 4.5 games 2'], df.at[i, 'AH 5 games 1'], df.at[i, 'AH 5 games 2'], df.at[i, 'AH 5.5 games 1'], df.at[i, 'AH 5.5 games 2'], df.at[i, 'AH 6 games 1'], 
+                #df.at[i, 'AH 6 games 2'], df.at[i, 'AH 6.5 games 1'], df.at[i, 'AH 6.5 games 2'], df.at[i, 'AH 7 games 1'], df.at[i, 'AH 7 games 2'], df.at[i, 'AH 7.5 games 1'], 
+                #df.at[i, 'AH 7.5 games 2'], df.at[i, 'Correct Score 3:0'], df.at[i, 'Correct Score 2:0'], df.at[i, 'Correct Score 2:1'], df.at[i, 'Correct Score 3:1'], 
+                #df.at[i, 'Correct Score 3:2'], df.at[i, 'Correct Score 0:3'], df.at[i, 'Correct Score 0:2'], df.at[i, 'Correct Score 1:2'], df.at[i, 'Correct Score 1:3'], 
+                #df.at[i, 'Correct Score 2:3']))
+                self.cur.execute("INSERT INTO odds_master VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+                                 (df.at[i, 'Link'], df.at[i, 'Date'], 0, df.at[i, 'Player1'], df.at[i, 'Player2'], df.at[i, 'Info'], 
+                                  df.at[i, 'Location'], df.at[i, 'Score'], df.at[i, 'Ranking1'], df.at[i, 'Ranking2'], 
+                                  datetime.strptime(str(df.at[i, 'Birthdate1']), '%d.%m.%Y').date(), datetime.strptime(str(df.at[i, 'Birthdate2']), '%d.%m.%Y').date(), 
+                                  df.at[i, 'Height1'], df.at[i, 'Height2'], df.at[i, 'Weight1'], df.at[i, 'Weight2'], df.at[i, 'Hand1'], df.at[i, 'Hand2'], df.at[i, 'Pro1'], 
+                                  df.at[i, 'Pro2'], df.at[i, 'Home'], df.at[i, 'Away']))
                 self.conn.commit()
             except:
                 pass
@@ -609,11 +680,6 @@ class Tennis_Downloads:
         t1 = datetime.now()
         print(t1)
         print("It actually took ",(t1-t0)," seconds.")
-
-    def view(self):
-        self.cur.execute("SELECT * FROM links_reg")
-        rows=self.cur.fetchall()
-        return rows
 
     def Ranking_Down(self, StDt, EndDt, Days, db):
         t0 = datetime.now()
@@ -638,15 +704,6 @@ class Tennis_Downloads:
         cur = conn.cursor()
         cur.execute("SELECT * from ranking_master")
         Links = [tup[2] for tup in cur.fetchall()]  
-
-        # for i in range(0, len(URL_list)):
-        #     if URL_list[i] in str(Links):
-        #         URL_list.pop(i)
-        #         pass
-
-        #if len(URL_list) == 0:
-        #    print('All dates already downloaded.')
-            
 
         Rank = []
         Name = []
@@ -674,11 +731,17 @@ class Tennis_Downloads:
                         Age.append(str(cont.tbody.find_all('tr')[s].find_all('td')[4].get_text()[2:-4]))
                     Ident.append(URL_list[i][52:URL_list[0].find('&')] + str(cont.tbody.find_all('tr')[s].find_all('td')[3].find('a').get_text().encode('utf-8').strip()))
                     Dates.append(URL_list[i][52:URL_list[0].find('&')])
-            print(round(i/len(URL_list)*100, 2)," finished")
+            print('Progess: ', round(i/len(URL_list)*100, 2),"% finished")
+
+        data = {'identifier':Ident, 'link':Link, 'rank':Rank, 'name':Name, 'age':Age,'points':Points, 'tourn':Tourn}
+        df = pd.DataFrame(data)
+        for i in range(0, len(df['link'])):
+            df.at[i, 'date'] = df.at[i, 'link'][df.at[i, 'link'].find('=')+1:df.at[i, 'link'].find('&')]
+            df.at[i, 'name'] = df.at[i, 'name'][2:-1]
                         
         for i in range(0, len(Age)):
             try:
-                cur.execute("INSERT INTO ranking_master VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (Ident[i], 0, Link[i], int(Rank[i]), Dates[i], str(Name[i]), int(Age[i]), int(Points[i]), int(Tourn[i])))
+                cur.execute("INSERT INTO ranking_master VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (df.at[i, 'identifier'], 0, df.at[i, 'link'], int(df.at[i, 'rank']), df.at[i, 'date'], df.at[i, 'name'], int(df.at[i, 'age']), int(df.at[i, 'points']), int(df.at[i, 'tourn'])))
                 conn.commit()
             except:
                 pass
@@ -689,6 +752,7 @@ class Tennis_Downloads:
 
     def Update_IDs(self, db):
         t0 = datetime.now()
+        print('Update_IDs started at: ', t0)
         self.conn = sqlite3.connect(db)
         self.cur = self.conn.cursor()
         
@@ -700,8 +764,10 @@ class Tennis_Downloads:
         Name = [tup[1] for tup in self.cur.fetchall()]
         self.cur.execute("SELECT * from players_master")
         Birthday = [tup[3] for tup in self.cur.fetchall()]
-        df_play = pd.DataFrame({'ID':ID, 'Name':Name, 'Birthday':Birthday})
-        df_play.set_index('ID')
+        self.cur.execute("SELECT * from players_master")
+        Player_Reg = [tup[4] for tup in self.cur.fetchall()]
+        df_play = pd.DataFrame({'ID':ID, 'Name':Name, 'Birthday':Birthday, 'Player_Reg':Player_Reg})
+        #df_play.set_index('ID')
         
         
         #1.2 get data for DBs where to adjust values
@@ -735,17 +801,45 @@ class Tennis_Downloads:
         df_reg.drop('index', axis=1, inplace = True)
         
         #ranking
+        self.cur.execute("SELECT * from ranking_master")
+        ident = [tup[0] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        link = [tup[2] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        ID = [tup[1] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        rank = [tup[3] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        name = [tup[5] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        age = [tup[6] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        points = [tup[7] for tup in self.cur.fetchall()]
+        self.cur.execute("SELECT * from ranking_master")
+        tourn = [tup[8] for tup in self.cur.fetchall()]
+        data = {'identifier':ident, 'link':link, 'id':ID, 'rank':rank, 'name':name, 'age':age,'points':points, 'tourn':tourn}
+        df_rank = pd.DataFrame(data)
+        df_rank_play = df_rank[~df_rank['id'] == 0]
+        df_rank = df_rank[df_rank['id'] == 0]
+        df_rank.reset_index(inplace = True)
+        df_rank.drop('index', axis=1, inplace = True)
+        
         
         #2. Calculate Match IDs: P1**2 * P2**2 + timestamp
         # odds_master
-        try:
-            missing_odds = df_odds.loc[df_odds['ID'] == 0]
-            print('In the odds DB there are ', len(missing_odds),' match IDs missing')
-            for i in range(0, len(df_odds['ID'])):
-                if df_odds.at[i, 'ID'] == 0:
+        missing_odds = df_odds.loc[df_odds['ID'] == 0]
+        print('In the odds DB there are ', len(missing_odds),' match IDs missing')
+        for i in range(0, len(df_odds['ID'])):
+            if i == 0:
+                print('Initiating Odds MatchID update...')
+            if i%100 == 0:
+                print('Progress: ', round(i/len(df_odds['ID']) *100, 2), '%')                
+            if df_odds.at[i, 'ID'] == 0:
+                try:
                     df_odds.at[i, 'ID'] = int(df_play[df_play['Name'] == df_odds.at[i, 'Player1']]['ID'].iloc[0]**2 * df_play[df_play['Name'] == df_odds.at[i, 'Player2']]['ID'].iloc[0]**2 + int(time.mktime(datetime.strptime(df_odds.at[i, 'Dates'], "%d.%m.%Y").timetuple())))
-        except:
-            pass
+                except:
+                    pass
+
         
         #reg_master
         
@@ -759,19 +853,19 @@ class Tennis_Downloads:
         df_reg_alt.reset_index(inplace = True)
         df_reg_alt.drop('index', axis=1, inplace = True)
         df_reg_alt['PID'] = 0
+        print('In the reg DB there are ', len(df_reg_alt['PID']),' players without IDs')
         
-        
-        #check if name is already in DB
+        #check if name is already in DB, if not, do word comparison
         
         for i in range(0, len(df_reg_alt['Player'])):
             try:
-                df_reg_alt.at[i, 'PID'] = int(df_play[df_reg_alt.at[i, 'Player'] == df_play['Name_Reg']]['ID'])
+                df_reg_alt.at[i, 'PID'] = int(df_play[df_reg_alt.at[i, 'Player'] == df_play['Player_Reg']]['ID'])
             except:
                 pass   
             if i == 0:
                 print('Initiating the word comparison...')
             if i%100 == 0:
-                print('Progress: ', i/len(df_reg_alt['Player']) *100, '%')
+                print('Progress: ', round(i/len(df_reg_alt['Player']) *100, 2), '%')
             if df_reg_alt.at[i, 'PID'] == 0:
                 try:
                     Player = process.extractOne(df_reg_alt.at[i, 'Player'], Name)[0]
@@ -786,9 +880,11 @@ class Tennis_Downloads:
         df_reg_alt.reset_index(inplace = True)
         df_reg_alt.drop('index', axis=1, inplace = True)
         
-        for i in range(0, len(df_reg['ID'])):  
+        for i in range(0, len(df_reg['ID'])): 
+            if i == 0:
+                print('Quickly updating the dates and player IDs for the reg DB...') 
             if i%100 == 0:
-                print('Progress: ', i/len(df_reg['Player1']))
+                print('Progress: ', round(i/len(df_reg['Player1']) * 100, 2), '%')
             try:
                 if len(df_reg.at[i, 'Dates']) == 8:
                     df_reg.at[i, 'Dates'] = df_reg.at[i, 'Dates'][:5] + '.20' + df_reg.at[i, 'Dates'][6:8]
@@ -798,10 +894,70 @@ class Tennis_Downloads:
                 df_reg.at[i, 'ID'] = int(df_reg_alt[df_reg_alt['Player'] == df_reg.at[i, 'Player1']]['PID'].iloc[0]**2 * df_reg_alt[df_reg_alt['Player'] == df_reg.at[i, 'Player2']]['PID'].iloc[0]**2 + int(time.mktime(datetime.strptime(df_reg.at[i, 'Dates'], "%d.%m.%Y").timetuple())))
             except:
                 pass
+            
+        #ranking
+        for i in range(0, len(df_rank['link'])):
+            if i==0:
+                print('Starting the player ID update for ranking...')
+            if i%1000 == 0:
+                print('Progress: ', round(i/len(df_rank['link']) * 100, 2), '%')
+                df_rank_play
+            #first see if name already has ID in rank db, then in the other DBs
+            try:
+                df_rank.at[i, 'id'] = df_rank_play.loc[df_rank.at[i, 'name'] == df_rank_play['name']]['id'].item()
+            except:
+                try:
+                    df_rank.at[i, 'id'] = df_play.loc[df_rank.at[i, 'name'] == df_play['name2']]['pid'].item()
+                except:
+                    try:
+                        df_rank.at[i, 'id'] = df_play.loc[df_rank.at[i, 'name'] == df_play['name1']]['pid'].item()
+                    except:
+                        pass
+                
+        df_rank_alt = df_rank[df_rank['id'] == 0]
+        df_rank_alt.drop_duplicates('name', inplace = True)
+        df_rank_alt.reset_index(inplace = True)
+        df_rank_alt.drop('index', axis=1, inplace = True)
+        print('In the rank DB there are ', len(df_rank_alt['name']),' players without IDs')
+        
+        #do word comparison
+        
+        for i in range(0, len(df_rank_alt['name'])):  
+            if i == 0:
+                print('Initiating the word comparison for ranking DB...')
+            if i%100 == 0:
+                print('Progress: ', round(i/len(df_rank_alt['name']) *100, 2), '%')
+            try:
+                Player = process.extractOne(df_rank_alt.at[i, 'name'], Name)[0]
+                df_rank_alt.at[i, 'Score'] = process.extractOne(df_rank_alt.at[i, 'name'], Name)[1]
+                df_rank_alt.at[i, 'Player_DB'] = Player
+                df_rank_alt.at[i, 'id'] = int(df_play[df_play['Name'] == Player]['ID'].iloc[0])
+            except:
+                pass
+            
+        #only keep if match is close enough
+        df_rank_alt = df_rank_alt[df_rank_alt['Score']>86]
+        df_rank_alt.reset_index(inplace = True)
+        df_rank_alt.drop('index', axis=1, inplace = True)
+        
+        for i in range(0, len(df_rank['id'])): 
+            if i == 0:
+                print('Quickly updating the player IDs for the rank DB...') 
+            if i%100 == 0:
+                print('Progress: ', round(i/len(df_rank['name']) * 100, 2), '%')
+            if df_rank.at[i, 'id'] == 0:
+                try:
+                    df_rank.at[i, 'ID'] = int(df_rank_alt[df_rank_alt['name'] == df_rank.at[i, 'name']]['id'].iloc[0])
+                except:
+                    pass
         
         #3.update values in DBs
         #odds_master
         for i in range(0, len(df_odds['ID'])):
+            if i == 0:
+                print('Initiating the time intense upload to the db 1/4...')
+            if i%100 == 0:
+                print('Progress: ', round(i/len(df_odds['ID']) *100, 2), '%')            
             if df_odds.at[i, 'ID_check'] == 0:
                 self.cur.execute("UPDATE odds_master SET MatchID = ? WHERE Link = ?", (int(df_odds.at[i, 'ID']), df_odds.at[i, 'Primary']))
                 self.conn.commit()
@@ -810,9 +966,9 @@ class Tennis_Downloads:
         #reg
         for i in range(0, len(df_reg['ID'])):
             if i == 0:
-                print('Initiating the time intense upload to the db...')
+                print('Initiating the time intense upload to the db 2/4...')
             if i%100 == 0:
-                print('Progress: ', i/len(df_reg_alt['Player']) *100, '%')
+                print('Progress: ', round(i/len(df_reg['ID']) *100, 2), '%')
             if math.isnan(df_reg.at[i, 'ID_check']):
                 if df_reg.at[i, 'ID'] != 0:
                     try:
@@ -821,15 +977,32 @@ class Tennis_Downloads:
                         self.conn.commit()        
                     except:
                         pass
-        print('Match IDs for reg_master updated, step 2/3')
+
+        #Players DB
+        print('Currently updating the players DB 3/4...')
+        for i in range(0, len(df_reg_alt['Player'])):
+            try:
+                self.cur.execute("UPDATE players_master SET Name_Reg = ? WHERE PlayerID = ?", (df_reg_alt.at[i, 'Player'], int(df_reg_alt.at[i, 'PID'])))
+                self.conn.commit()
+            except:
+                pass
         
         #ranking (P ID)
-        
+        for i in range(0, len(df_rank['id'])):
+            if i == 0:
+                print('Initiating the time intense upload to the db 4/4...')
+            if i%100 == 0:
+                print('Progress: ', round(i/len(df_rank['id']) *100, 2), '%')
+            try:
+                self.cur.execute("UPDATE ranking_master SET PlayerID = ? WHERE ident = ?", (int(df_rank.at[i, 'ID']), df_rank.at[i, 'identifier']))
+                self.conn.commit()        
+            except:
+                pass        
         
         
         t1 = datetime.now()
         print(t1)
-        print("It actually took ",(t1-t0)," seconds.")
+        print("Done. It actually took ",(t1-t0))
         
     def Update_Players(self, db):
         #extract data from DB odds
@@ -896,16 +1069,193 @@ class Tennis_Downloads:
         #Update in DB
         for i in range(0, len(df_mas['ID'])):
             try:
-                self.cur.execute("INSERT INTO players_master VALUES (?, ?, ?, ?)", (int(df_mas.at[i, 'ID']), df_mas.at[i, 'Name'], df_mas.at[i, 'Hand'], df_mas.at[i, 'Birthday']))
+                self.cur.execute("INSERT INTO players_master VALUES (?, ?, ?, ?, ?)", (int(df_mas.at[i, 'ID']), df_mas.at[i, 'Name'], df_mas.at[i, 'Hand'], df_mas.at[i, 'Birthday'], 0))
                 self.conn.commit()
             except:
-                pass        
+                pass         
         
         print('The update took', datetime.now() - t0, ' seconds. There are ', len(df_mas['ID']), ' Players in the DB.')
         
     def Map_Out(self, db):
-        print('Function in progress...')
-        print(db)
+
+        
+        t0 = datetime.now()
+        print('Creating output... started at: ', t0)
+        conn = sqlite3.connect(db)
+        cur = conn.cursor()
+        
+        #1 Get data from DB
+        #a) odds master
+        cur.execute("SELECT * from odds_master")
+        dates = [tup[1] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        matchID = [tup[2] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        score = [tup[7] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        birth1 = [tup[10] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        birth2 = [tup[11] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        hand1 = [tup[16] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        hand2 = [tup[17] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        odds1 = [tup[20] for tup in cur.fetchall()]
+        cur.execute("SELECT * from odds_master")
+        odds2 = [tup[21] for tup in cur.fetchall()]
+        df_odds = pd.DataFrame({'Date':dates, 'MatchID':matchID, 'Score':score, 'Birthday1':birth1, 'Birthday2':birth2, 'Hand1':hand1, 'Hand2':hand2, 'Odds1':odds1, 'Odds2':odds2})
+        
+        #b) ranking master
+        cur.execute("SELECT * from ranking_master")
+        dates = [tup[4] for tup in cur.fetchall()]
+        cur.execute("SELECT * from ranking_master")
+        playerID = [tup[1] for tup in cur.fetchall()]
+        cur.execute("SELECT * from ranking_master")
+        rank = [tup[3] for tup in cur.fetchall()]
+        df_rank = pd.DataFrame({'Date':dates, 'PlayerID':playerID, 'Rank':rank})
+        
+        
+        #c) reg master
+        cur.execute("SELECT * from reg_master")
+        matchID = [tup[2] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        p1 = [tup[3] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        p2 = [tup[4] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        roundtot = [tup[5] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        location = [tup[7] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        surface = [tup[8] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        firstperc1 = [tup[9] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        firstpoint1 = [tup[10] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        secondpoint1 = [tup[11] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        bp1 = [tup[12] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        returnp1 = [tup[13] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        totpoint1 = [tup[14] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        doublef1 = [tup[15] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        aces1 = [tup[16] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        firstperc2 = [tup[17] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        firstpoint2 = [tup[18] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        secondpoint2 = [tup[19] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        bp2 = [tup[20] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        returnp2 = [tup[21] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        totpoint2 = [tup[22] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        doublef2 = [tup[23] for tup in cur.fetchall()]
+        cur.execute("SELECT * from reg_master")
+        aces2 = [tup[24] for tup in cur.fetchall()]
+        df_reg = pd.DataFrame({'MatchID':matchID, 'Player1':p1, 'Player2':p2, 'Round':roundtot, 'Location':location, 
+                               'Surface':surface, 'First Serve Percentage 1':firstperc1, 'First Serve Points Won 1':firstpoint1, 'Second Serve Points Won 1':secondpoint1, 
+                               'Break Points 1':bp1, 'Return Points Won 1':returnp1, 'Total Points Won 1':totpoint1, 'Double Faults 1':doublef1, 'Aces 1':aces1,
+                               'First Serve Percentage 2':firstperc2, 'First Serve Points Won 2':firstpoint2, 'Second Serve Points Won 2':secondpoint2, 
+                               'Break Points 2':bp2, 'Return Points Won 2':returnp2, 'Total Points Won 2':totpoint2, 'Double Faults 2':doublef2, 'Aces 2':aces2})
+        for i in range(0, len(df_reg['Round'])):
+            try:
+                if math.isnan(df_reg.at[i, 'MatchID']):
+                    df_reg.at[i, 'MatchID'] = 0
+            except:
+                pass
+        df_reg = df_reg[df_reg['MatchID'] != 0]
+        
+        #d) players for PID
+        cur.execute("SELECT * from players_master")
+        pid = [tup[0] for tup in cur.fetchall()]
+        cur.execute("SELECT * from players_master")
+        name = [tup[4] for tup in cur.fetchall()]
+        df_play = pd.DataFrame({'PlayerID':pid, 'Name':name})
+        
+        #e) old out
+        cur.execute("SELECT * from output_master")
+        matchID = [tup[0] for tup in cur.fetchall()]        
+        df_output = pd.DataFrame({'MatchID':matchID})
+        
+        #create output DF, remove MatchIDs already in output_master
+        keys = list(df_output.columns.values)
+        df_out = pd.merge(df_odds, df_reg, how='inner')
+        df_out = df_out[~(df_out['MatchID']==df_output['MatchID'])]
+        i1 = df_out.set_index(keys).index
+        i2 = df_output.set_index(keys).index
+        df_out = df_out[~i1.isin(i2)]
+        
+        for i in range(0, len(df_out['MatchID'])):
+            if i%1000==0:
+                print(round(i/len(df_out['MatchID'])*100,2))
+            try:
+                df_out.at[i, 'ID Player 1'] = df_play[df_play['Name']==df_out.at[i, 'Player1']]['PlayerID'].item()
+                df_out.at[i, 'ID Player 2'] = df_play[df_play['Name']==df_out.at[i, 'Player2']]['PlayerID'].item()
+            except:
+                pass
+        
+        for i in range(0, len(df_rank['Date'])):
+            df_rank.at[i, 'Date'] = datetime.strptime(str(df_rank.at[i, 'Date']), '%Y-%m-%d').date()
+            
+            
+        t1 = datetime.now()
+        # closest monday monday + assign rank
+        for i in range(0, len(df_out['MatchID'])):   
+            if i==0:
+                print('Starting the assignment of closest Monday and ranking... Start time: ', t1)
+            if i%1000==0:
+                print('Progress: ', round(i/len(df_out['MatchID'])*100,2), '%')
+            df_out.at[i, 'Closest Monday'] = datetime.strptime(str(df_out['Date'][i]), '%d.%m.%Y').date() - timedelta(days = (datetime.strptime(str(df_out['Date'][i]), '%d.%m.%Y').date().weekday()))
+            try:
+                df_out.at[i, 'Ranking 1'] = df_rank[(df_rank['Date']  == df_out.at[i, 'Closest Monday']) & (df_rank['PlayerID'] == int(df_out.at[i, 'ID Player 1']))]['Rank'].item()
+            except:
+                pass
+            try:
+                df_out.at[i, 'Ranking 2'] = df_rank[(df_rank['Date']  == df_out.at[i, 'Closest Monday']) & (df_rank['PlayerID'] == int(df_out.at[i, 'ID Player 2']))]['Rank'].item()
+            except:
+                pass        
+        
+        df_out2 = df_out.dropna()
+        df_out2 = df_out2.reset_index()
+        df_out2.drop('index', axis=1, inplace = True)      
+
+        for i in range(0, len(df_out2['Birthday1'])):
+            if i == 0:
+                print('Uploading the output to the DB...')
+            if i%100 == 0:
+                print('Progress: ', round(i/len(df_out2['Birthday1']) *100, 2), '%')
+            try:
+                cur.execute("INSERT INTO output_master VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+                            (df_out2.at[i, 'MatchID'], datetime.strptime(str(df_out2.at[i, 'Birthday1']), '%Y-%m-%d').date(), 
+                             datetime.strptime(str(df_out2.at[i, 'Birthday2']), '%Y-%m-%d').date(), 
+                             datetime.strptime(str(df_out2.at[i, 'Date']), '%d.%m.%Y').date(), df_out2.at[i, 'Hand1'], df_out2.at[i, 'Hand2'],
+                             df_out2.at[i, 'Odds1'], df_out2.at[i, 'Odds2'], df_out2.at[i, 'Score'], df_out2.at[i, 'Aces 1'], df_out2.at[i, 'Aces 2'], 
+                             df_out2.at[i, 'Break Points 1'],
+                             df_out2.at[i, 'Break Points 2'], df_out2.at[i, 'Double Faults 1'], df_out2.at[i, 'Double Faults 2'], df_out2.at[i, 'First Serve Percentage 1'], 
+                             df_out2.at[i, 'First Serve Percentage 2'], df_out2.at[i, 'First Serve Points Won 1'],
+                             df_out2.at[i, 'First Serve Points Won 2'], df_out2.at[i, 'Location'], df_out2.at[i, 'Player1'], df_out2.at[i, 'Player2'], 
+                             df_out2.at[i, 'Return Points Won 1'], df_out2.at[i, 'Return Points Won 2'],
+                             df_out2.at[i, 'Round'], df_out2.at[i, 'Second Serve Points Won 1'], df_out2.at[i, 'Second Serve Points Won 2'], df_out2.at[i, 'Surface'], 
+                             df_out2.at[i, 'Total Points Won 1'], df_out2.at[i, 'Total Points Won 2'],
+                             int(df_out2.at[i, 'ID Player 1']), int(df_out2.at[i, 'ID Player 2']), int(df_out2.at[i, 'Ranking 1']), int(df_out2.at[i, 'Ranking 2'])))
+                conn.commit()        
+            except:
+                pass   
+            
+        t2 = datetime.now()
+        print('Done. The update took :', t2-t0, 'seconds')
+                
+        
+        
     
     def __del__(self):
         self.conn.close()
