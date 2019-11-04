@@ -7,7 +7,6 @@ import requests
 from datetime import datetime, timedelta
 import os
 import sqlite3
-from fuzzywuzzy import fuzz, process
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 import time
@@ -23,14 +22,14 @@ class DB_operations:
         self.cur = self.conn.cursor()
         print('Connected to the database at ' + str(datetime.now() + ' .'))
         
-    def write_dataframe(db, tbl, df):
+    def write_dataframe(self, db, tbl, df):
         '''
         Write a dataframe to the database
         '''
-        engine = create_engine('sqlite:///my_lite_store.db')
+        engine = create_engine('sqlite:///' + db)
         df.to_sql(tbl, engine, if_exists='append')      
         
-    def check_for_duplicates(db, tbl, df):
+    def check_for_duplicates(self, db, tbl, df):
         '''
         Check if some entries of df are already in db tbl, if so, drop them
         '''
@@ -43,25 +42,25 @@ class DB_operations:
         return df
         
         
-    def show_tables(db):
+    def show_tables(self, db):
         '''
         Print a list of all the tables in a database
         '''
-        cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        info = cursor.fetchall()
+        self.cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        info = self.cur.fetchall()
         tbl_names = [table for table in info]
         return tbl_names
 
-    def show_columns(db, tbl):
+    def show_columns(self, db, tbl):
         '''
         Print a list of the columns in a database
         '''
-        cur.execute("SELECT * from " + str(tbl))
-        clm_names = [description[0] for description in cursor.description]
+        self.cur.execute("SELECT * from " + str(tbl))
+        clm_names = [description[0] for description in self.cur.description]
         return clm_names
         
         
-    def retrieve_data(db, tbl, columns = 'all'):
+    def retrieve_data(self, db, tbl, columns = 'all'):
         '''
         Retrieve data from a database
         Input:
@@ -72,10 +71,10 @@ class DB_operations:
             df: DataFrame with all information retrieved
         '''
         df = pd.DataFrame()
-        cur.execute("SELECT * from " + str(tbl))
-        all_info = cur.fetchall()
+        self.cur.execute("SELECT * from " + str(tbl))
+        all_info = self.cur.fetchall()
         if columns == 'all':
-            header = show_columns(db, tbl)
+            header = DB_operations.show_columns(db, tbl)
             i = 0
             for head in header:
                 df[head] = [tup[i] for tup in all_info]
@@ -95,12 +94,17 @@ class DB_operations:
                 df[columns_all[col]] = [tup[col] for tup in all_info]           
         return df
     
+    def save_excel(df, name):
+        '''
+        Save DataFrame as excel, giving the DF and a name.
+        '''
+        writer=pd.ExcelWriter(name + '.xlsx', engine='xlsxwriter')
+        df.to_excel(writer,'Sheet1',index=False)
+        writer.save()
+    
     def __del__(self):
         self.conn.close()
         print('Bye bye, connection to DB is closed.')
-
-   
-    
 
 class Tennis_Downloads:
     '''
@@ -110,7 +114,7 @@ class Tennis_Downloads:
     def __init__(self):
         print('You can now download data for tennis statistics or odds')
 
-    def download_link_odd(link):
+    def download_link_odd(self, link):
         '''
         Download the links for individual matches from the link for all 
         the matches for the odd.
@@ -132,7 +136,7 @@ class Tennis_Downloads:
         return links
             
 
-    def download_links_odds(db, tbl, in_up = 'update'):
+    def download_links_odds(self, db, tbl, in_up = 'update'):
         t0 = datetime.now()
         print('''Downloading links for the odds.
               Start at time: ''', t0)
@@ -182,21 +186,23 @@ class Tennis_Downloads:
             if urls.index(url) %10 == 0:
                 print('Progress: ', str(round(urls.index(url)/len(urls) *
                                               100, 2)), '%')
-            col11 = Tennis_Downloads.download_link_odd(url)
+            col11 = DB_operations.download_link_odd(url)
             col22 = [url] * len(col11)
             col33 = [dates[i]] * len(col11)
             col1.extend(col11)
             col2.extend(col22)
             col3.extend(col33)
             i += 1
-        df = pd.DataFrame({'specific link':col11, 'general link':col22})            
+        df = pd.DataFrame({'specific link':col1, 
+                           'general link':col2,
+                           'date':col3})            
         df.set_index('specific link', inplace = True, drop = True)            
         if in_up != 'initiate':
             df = DB_operations.check_for_duplicates(db, tbl, df)
         DB_operations.write_dataframe(db, tbl, df)
         print('Done.')
         
-    def download_link_stat(link):
+    def download_link_stat(self, link):
         '''
         Download the links for individual matches from the link for all 
         the matches for the statistics.
@@ -231,7 +237,7 @@ class Tennis_Downloads:
             dates = [start_date - timedelta(days = n) for n in 
                      range(number_days)]
             urls = ["http://www.tennisergebnisse.net/herren/" + 
-                    str(date.year) + "-" + Tennis_Downloads.make_month(
+                    str(date.year) + "-" + DB_operations.make_month(
                             date.month) + 
                     "-" + str(date.day) + "/" for date in dates
                     ]
@@ -245,14 +251,14 @@ class Tennis_Downloads:
             dates = [start_date - timedelta(days = n) for n in 
                      range(number_days)]
             urls = ["http://www.tennisergebnisse.net/herren/" + 
-                    str(date.year) + "-" + Tennis_Downloads.make_month(
+                    str(date.year) + "-" + DB_operations.make_month(
                             date.month) + 
                     "-" + str(date.day) + "/" for date in dates
                     ]          
         else:
             spec_date = datetime.strptime(in_up, '%d-%m-%Y').date()
             urls = ["http://www.tennisergebnisse.net/herren/" + 
-                    str(spec_date.year) + "-" + Tennis_Downloads.make_month(
+                    str(spec_date.year) + "-" + DB_operations.make_month(
                             spec_date.month) + 
                     "-" + str(spec_date.day) + "/" 
                     ] 
@@ -272,12 +278,17 @@ class Tennis_Downloads:
             col2.extend(col22)
             col3.extend(col33)
             i += 1
-        df = pd.DataFrame({'specific link':col11, 'general link':col22})            
+        df = pd.DataFrame({'specific link':col1, 
+                           'general link':col2,
+                           'date':col3})            
         df.set_index('specific link', inplace = True, drop = True)            
         if in_up != 'initiate':
             df = DB_operations.check_for_duplicates(db, tbl, df)
         DB_operations.write_dataframe(db, tbl, df)
         print('Done.')
+
+
+
 
     def make_month(month):
         month = str(month)
@@ -321,66 +332,9 @@ class Tennis_Downloads:
         print('Bye bye.')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#db = 'C:\\Users\\alex1\\Documents\\Tennis\\New\\tennis.db'
+#download_links_stats(db, 'links_statistics', 'initiate')
+#download_links_odds(db, 'links_odds', 'initiate')
 
 
 
